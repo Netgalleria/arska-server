@@ -1,0 +1,19 @@
+[Unit]
+Description=Arska Server
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python3 /home/pi/arska-server/arska.py 
+WorkingDirectory=/home/pi/arska-server
+
+
+[Install]
+WantedBy=multi-user.target
+# Commands for setting up Arska Systemd service. Edit your home directory in ExecStart and ln commands.
+#sudo ln -s /home/pi/powerguru/arska.service /etc/systemd/system/arska.service
+#sudo chmod 644 /etc/systemd/system/arska.service
+#sudo systemctl daemon-reload
+#sudo systemctl enable arska.service
+#sudo systemctl start arska.service
+#sudo systemctl status arska.service

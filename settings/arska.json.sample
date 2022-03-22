@@ -1,0 +1,20 @@
+# Site specific settings:
+# EntsoEUAPIToken -  EntsoE API key, request this key from EntsoEU web site
+# bcdcLocationsHandled - supported forecasts, check you nearest solar forecast location at http://www.bcdcenergia.fi/
+# nettingPeriodMinutes - 60 normal netting in 1 hour periods, 15 possible in the future
+{
+    "EntsoEUAPIToken": "YOUR_TOKEN_COMES_HERE",
+    "SpotPriceArea": "FI",
+    "bcdcLocationsHandled": ["Salo","Espoo"],
+    "timeZoneLocal": "Europe/Helsinki",
+    "nettingPeriodMinutes": 60,
+    "dayaheadWindowBlocks" : [6,12,18,24],
+    "solarForecastBlocks" : [6,12,18,24],
+    "spot_price_variable_code" : "spotPriceRank{}h",
+    "solar_forecast_variable_code" : "solar{}h",
+    "states_internal_max" : 999 ,
+    "client_api_keys" : ["API_KEY_1","API_KEY_2"],
+    "telegraf_once_cmd" : "telegraf -once --config-directory /etc/telegraf/telegraf.d" ,
+    "host_ip" : "0.0.0.0",
+    "host_port" : 8080
+}
