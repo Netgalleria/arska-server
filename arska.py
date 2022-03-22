@@ -361,8 +361,13 @@ async def serve_states(request):
     # report in GitHub markdown format
     text_out = "| State      | Description  | Rule |\n|----------|--------- |----|\n" 
     for code, state in states.items():
-        enabledIf = "-" if "enabledIf" not in state else state["enabledIf"]
-        text_out += "| {} | {} | {} |\n".format(code,state["desc"],enabledIf)
+        if "enabledIf" in state:
+            code_str = str(code)
+            enabledIf = state["enabledIf"]
+        else:
+            code_str = '**' + str(code) + '-** '
+            enabledIf = ""
+        text_out += "| {} | {} | {} |\n".format(code_str,state["desc"],enabledIf)
 
     return Response(text=text_out, content_type='text/plain')
 
