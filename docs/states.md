@@ -12,11 +12,10 @@ Currently in use:
 | 101 | hour 01|
 | 102...122 | hour 02... hour |
 | 123 | hour 23, local time|
-| 130 RFU| päiväsähkö, daytime 07-22:, every day|
-| 131 RFU| yösähkö, 22-07, every day|
-| 140 RFU| kausisähkö talvipäivä, Nov 1- Mar 31 07-22, Mon-Sat|
-| 141 RFU| kausisähkö, other time|
-
+| 130 | päiväsähkö, daytime 07-22:, every day|
+| 131 | yösähkö, 22-07, every day|
+| 140 | kausisähkö talvipäivä, Nov 1- Mar 31 07-22, Mon-Sat|
+| 141 | kausisähkö, other time|
 
 
 ## Local states 1000-9999
@@ -24,27 +23,23 @@ Local  states can depend on local conditions, e.g. local power production/consum
 
 | State      | Description  |
 | ------------- |------------- |
-| 1001 | buying, more production than purchase in current netting period  |
+| 1001 | buying, more purchase production in current netting period  |
 | 1005 | selling, more production than purchase in current netting period|
-| 1006 | selling, before solar noon|
-| 1007 | selling, after solar noon|
-| 1010 | extra production, more production than defined base load|
+| 1006 | selling (like 1005), but enabled only before solar noon|
+| 1007 | selling (like 1005), but enabled only after solar noon|
+| 1010 | extra production, more production (read from inverter) than defined base load|
 | 1011 | extra production, before solar noon|
 | 1012 | extra production, after solar noon|
-| 19XX | energy forecast from BCDC Energia http://www.bcdcenergia.fi/, need refinement|
-| 1910 | dark day coming|
-| 1920 | sunny day coming|
-
 
 
 ## Regional states 10000-65535
-Price area specific states  depend on spot prices on the specific price area. FI-Finland is one price are, e.g. Norway and Sweden are divided to several price areas. These states are maintained by Arska Server instance (local or cloud based). Day-ahead price data is loaded from EntsoE transparency platform https://transparency.entsoe.eu/. 
+Price area specific states  depend on spot prices on the specific price area. FI-Finland is one price are, e.g. Norway and Sweden are divided to several price areas. These states are maintained by   [Arska Server instance](https://github.com/Netgalleria/arska-server/)(local or cloud based). Day-ahead price data is loaded from EntsoE transparency platform https://transparency.entsoe.eu/. 
 
 | State      | Description  | Rule |
 |----------|--------- |----|
 | **10100-**  | States solar power forecast |  |
 | 10101 | dark day coming (heat the boilers, there will be no cheap energy today) | solar24h<5 and hhmm >= '0000' and hhmm <'0700' |
-| 10105 | sun suncoming  | solar24h>5 and hhmm >= '0000' and hhmm <'0700' |
+| 10105 | pretty sunny day coming | solar24h>5 and hhmm >= '0000' and hhmm <'0700' |
 | 10111 | sunny coming (do not overheat the boilers) | solar24h>10 and hhmm >= '0000' and hhmm <'0700' |
 | **11000-**  | States based on day-ahead spot prices, fixed limits |  |
 | 11010 | spot very low < 2 c/kWh | energyPriceSpot<2 |
