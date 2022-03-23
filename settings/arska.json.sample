@@ -2,6 +2,7 @@
 # EntsoEUAPIToken -  EntsoE API key, request this key from EntsoEU web site
 # bcdcLocationsHandled - supported forecasts, check you nearest solar forecast location at http://www.bcdcenergia.fi/
 # nettingPeriodMinutes - 60 normal netting in 1 hour periods, 15 possible in the future
+# shelly_url is for reporting only, not required for Arska Server
 {
     "EntsoEUAPIToken": "YOUR_TOKEN_COMES_HERE",
     "SpotPriceArea": "FI",
@@ -16,5 +17,6 @@
     "client_api_keys" : ["API_KEY_1","API_KEY_2"],
     "telegraf_once_cmd" : "telegraf -once --config-directory /etc/telegraf/telegraf.d" ,
     "host_ip" : "0.0.0.0",
-    "host_port" : 8080
+    "host_port" : 8080,
+    "shelly_url" : "http://admin:password@192.168.68.105/status"
 }
