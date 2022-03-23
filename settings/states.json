@@ -1,23 +1,49 @@
+
+
+
+
 {
+    "10100": {
+        "desc": "States solar power forecast"
+    },
     "10101": {
         "enabledIf": "solar24h<5 and hhmm >= '0000' and hhmm <'0700'",
         "desc": "dark day coming (heat the boilers, there will be no cheap energy today)"
     },
-    "10111": {
+    "10105": {
         "enabledIf": "solar24h>5 and hhmm >= '0000' and hhmm <'0700'",
-        "desc": "sunny 10101 coming (do not overheat the boilers)"
+        "desc": "pretty sunny day coming "
+    },
+    "10111": {
+        "enabledIf": "solar24h>10 and hhmm >= '0000' and hhmm <'0700'",
+        "desc": "sunny coming (do not overheat the boilers)"
+    },
+    "11000": {
+        "desc": "States based on day-ahead spot prices, fixed limits"
+    },
+    "11010": {
+        "enabledIf": "energyPriceSpot<2",
+        "desc": "spot very low < 2 c/kWh"
+    },
+    "11012": {
+        "enabledIf": "energyPriceSpot<4",
+        "desc": "spot low < 4 c/kWh"
+    },
+    "11014": {
+        "enabledIf": "energyPriceSpot<6",
+        "desc": "spot moderate < 6 c/kWh"
     },
     "11020": {
         "enabledIf": "energyPriceSpot>10",
-        "desc": "Spot price over 10"
+        "desc": "spot pretty expensive > 10 c/kWh"
     },
     "11021": {
         "enabledIf": "energyPriceSpot>15",
-        "desc": "Spot price over 15"
+        "desc": "spot expensive > 15 c/kWh"
     },
     "11022": {
         "enabledIf": "energyPriceSpot>30",
-        "desc": "Spot price over 30"
+        "desc": "spot very expensive > 30 c/kWh"
     },
     "11100": {
         "desc": "best spot price ranks in various windows"
@@ -27,16 +53,17 @@
     },
     "11111": {
         "enabledIf": "spotPriceRank24h==1",
-        "desc": "cheapest 1 h in 6 h"
+        "desc": "cheapest 1 hours in coming 6 h"
     },
     "11112": {
         "enabledIf": "spotPriceRank24h<=2",
-        "desc": "cheapest 2 h in 6 h"
+        "desc": "cheapest 2 hours coming 6 h"
     },
     "11113": {
         "enabledIf": "spotPriceRank6h<=3",
-        "desc": "cheapest 3 h in 6 h"
-    }, "11120": {
+        "desc": "cheapest 3 hour in coming 6 h"
+    }, 
+    "11120": {
         "desc": "best spot price ranks in 12 h window"
     },
     "11121": {
@@ -55,9 +82,32 @@
         "enabledIf": "spotPriceRank12h<=4",
         "desc": "cheapest 4 h in 12 h"
     },
+    "11140": {
+        "desc": "best spot price ranks in 24 h window"
+    },
     "11141": {
         "enabledIf": "spotPriceRank24h==1",
         "desc": "Cheapest spot price in 24 h window"
+    },
+    "11142": {
+        "enabledIf": "spotPriceRank24h<=2",
+        "desc": "Cheapest 2 hours in 24 h window"
+    },
+    "11143": {
+        "enabledIf": "spotPriceRank24h<=3",
+        "desc": "Cheapest 3 hours in 24 h window"
+    },
+    "11144": {
+        "enabledIf": "spotPriceRank24h<=4",
+        "desc": "Cheapest 4 hours in 24 h window"
+    },
+    "11145": {
+        "enabledIf": "spotPriceRank24h<=5",
+        "desc": "Cheapest 5 hours in 24 h window"
+    },
+    "11146": {
+        "enabledIf": "spotPriceRank24h<=6",
+        "desc": "Cheapest 6 hours in 24 h window"
     },
     "11156": {
         "enabledIf": "energyPriceSpot<4.0 and spotPriceRank24h<=6",
