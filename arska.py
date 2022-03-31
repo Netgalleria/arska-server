@@ -1,7 +1,6 @@
 #!/usr/bin/env /usr/bin/python3.9 
 # coding: utf-8 
-from multiprocessing.dummy.connection import families
-from pickle import NONE
+#from multiprocessing.dummy.connection import families
 import traceback #error reporting
 import sys
 import json
@@ -9,28 +8,26 @@ import os
 import signal
 
 
-import settings as s
+import settings as s #file names and functions shared with Telegraf plugins
 
-import subprocess
+import subprocess # for calling Telegraf command
 import time
 import pytz #time zone
 
-from datetime import datetime, timezone,date, timedelta
-#aiohttp
-import asyncio
+from datetime import datetime
+
+# Web server libraries
 from aiohttp import web
 from aiohttp.web import Response
 
 from aiohttp_session import session_middleware  #pip3 install aiohttp_session[secure]
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from aiohttp_basicauth_middleware import basic_auth_middleware
-import hashlib
+import hashlib #  for optional web server authentication
 
 from datetime import datetime
 from threading import Thread
 
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
 
 data_updates = {}
 
@@ -170,7 +167,7 @@ class Arska:
 
  
 
-def sig_handler(signum, frame):
+def sig_handler(signum, frame): # operations of exit
     pass
     exit(1)
     
@@ -317,8 +314,7 @@ def save_data_json(field_list,file_name):
         return False
 
 
-
-def filtered_fields(field_list,tag_name_value,debug_print=False, save_file_name = ''):
+def filtered_fields(field_list,tag_name_value, save_file_name = ''):
     global data_updates
     tz_utc = pytz.timezone("UTC")
     
@@ -337,16 +333,7 @@ def filtered_fields(field_list,tag_name_value,debug_print=False, save_file_name 
 
     if len(result_set)>0:
         print("{:s} , fields with tag name {:s} :".format(datetime.now().strftime("%Y-%m-%dT%H:%M:%S"), tag_name_value),end = ' ')        
-        if debug_print:
-            if result_set:
-                print()
-                pp.pprint(result_set)
-            else:
-                print("None")    
-            print()
-            print()
-        else:
-            print(str(len(result_set)) + " rows" )
+        print(str(len(result_set)) + " rows received" )
             
         data_updates[tag_name_value] = {"updated" : tz_utc.localize(datetime.utcnow()), "latest_ts" : latest_ts }
  
@@ -444,11 +431,11 @@ async def process_telegraf_post(request):
     obj = await request.json()
     #TODO: different metrics could be parametrized, so addional metrics (eg. PV inverter data) could be added without code changes
     if "metrics" in obj:
-        dayahead_new = filtered_fields(obj["metrics"],"dayahead",False,s.dayahead_file_name)
+        dayahead_new = filtered_fields(obj["metrics"],"dayahead",s.dayahead_file_name)
         if len(dayahead_new)>0:
             dayahead_list = dayahead_new
           
-        forecastpv_new = filtered_fields(obj["metrics"],"forecastpv",False,s.forecastpv_file_name)
+        forecastpv_new = filtered_fields(obj["metrics"],"forecastpv",s.forecastpv_file_name)
         if len(forecastpv_new)>0:
             forecastpv_list = forecastpv_new
 

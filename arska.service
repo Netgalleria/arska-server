@@ -4,8 +4,8 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python3.9 /home/olli/arska-server/arska.py 
-WorkingDirectory=/home/olli/arska-server
+ExecStart=/usr/bin/python3.9 /home/pi/arska-server/arska.py 
+WorkingDirectory=/home/pi/arska-server
 
 
 [Install]
