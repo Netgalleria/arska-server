@@ -1,16 +1,23 @@
 For most up-to-date information see [Arska Node wiki](https://github.com/Netgalleria/arska-node/wiki)
 
 
-
-
-
-
-
 ## Arska Server
 
 * Clone Arska Server to your repository: `git clone https://github.com/Netgalleria/arska-server.git`
 * `cd arska-server`
-* install required packages:´
+* install required packages:`sudo -H pip3 install pytzaiohttp aiohttp_sse aiohttp_session aiohttp_basicauth_middleware telegraf_pyplug entsoe-py hashlib--upgrade`
+
+###Install Arska as SystemD service:
+```
+sudo cp arska.service /etc/systemd/system/arska.service
+sudo chmod 644 /etc/systemd/system/arska.service
+sudo systemctl daemon-reload
+sudo systemctl enable arska.service
+sudo systemctl start arska.service
+sudo systemctl status arska.service
+```
+
+
 
 
 ### Files
@@ -24,4 +31,4 @@ For most up-to-date information see [Arska Node wiki](https://github.com/Netgall
 * setting/arska.json.sample - copy to setting/arska.json end edit
 * setting/telegraf-arska.conf.sample - copy to setting/telegraf-arska.conf and edit
 
-Installation documentation is not finalized yet. This is a sceleton of documetations. Please comment on [Arska discussion](https://github.com/Netgalleria/arska-node/discussions).
+Installation documentation is not finalized yet. This is a sceleton of documetation. Please comment on [Arska discussion](https://github.com/Netgalleria/arska-node/discussions).
