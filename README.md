@@ -1,6 +1,4 @@
-For most up-to-date information see [Arska Node wiki](https://github.com/Netgalleria/arska-node/wiki)
-
-
+For information about Arska Node and the concept see [Arska Node wiki](https://github.com/Netgalleria/arska-node/wiki)
 
 ## Arska Server
 Installation documentation is not finalized yet. This is a sceleton of documentation. Please comment on [Arska discussion](https://github.com/Netgalleria/arska-node/discussions).
@@ -37,4 +35,3 @@ sudo systemctl enable arska.service
 sudo systemctl start arska.service
 sudo systemctl status arska.service
 ```
-
