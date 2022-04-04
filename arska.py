@@ -419,7 +419,9 @@ async def serve_state_series(request):
 
     state_series = arska.get_values_timeser("states",start,end,states_requested)
     state_series["ts"] = time.time()
+    state_series["ttl"] = arska.get_setting("state_series_ttl")
     state_series["node_priority"] = 0
+
 
     return Response(text=json.dumps(state_series), content_type='application/json')
     

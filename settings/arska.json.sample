@@ -3,6 +3,8 @@
 # bcdcLocationsHandled - supported forecasts, check you nearest solar forecast location at http://www.bcdcenergia.fi/
 # nettingPeriodMinutes - 60 normal netting in 1 hour periods, 15 possible in the future
 # shelly_url is for reporting only, not required for Arska Server
+# state_series_ttl - time-to-live value for state series query, e.g. 7200 , indicates to a client that do not do same query within 2 hours
+
 {
     "EntsoEUAPIToken": "YOUR_TOKEN_COMES_HERE",
     "SpotPriceArea": "FI",
@@ -15,6 +17,7 @@
     "solar_forecast_variable_code" : "solar{}h",
     "states_internal_max" : 999 ,
     "client_api_keys" : ["API_KEY_1","API_KEY_2"],
+    "state_series_ttl" : 7200,
     "telegraf_once_cmd" : "telegraf -once --config-directory /etc/telegraf/telegraf.d" ,
     "host_ip" : "0.0.0.0",
     "host_port" : 8080,
