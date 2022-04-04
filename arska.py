@@ -419,7 +419,7 @@ async def serve_state_series(request):
 
     state_series = arska.get_values_timeser("states",start,end,states_requested)
     state_series["ts"] = time.time()
-    state_series["ttl"] = arska.get_setting("state_series_ttl")
+    state_series["expires"] = int(time.time()) + arska.get_setting("state_series_ttl",7200)
     state_series["node_priority"] = 0
 
 
