@@ -53,34 +53,30 @@
     },
     "11111": {
         "enabledIf": "spotPriceRank24h==1",
-        "desc": "cheapest 1 hours in coming 6 h"
+        "desc": "cheapest 1 hours in coming 24 h"
     },
     "11112": {
         "enabledIf": "spotPriceRank24h<=2",
-        "desc": "cheapest 2 hours coming 6 h"
+        "desc": "cheapest 2 hours coming 24 h"
     },
-    "11113": {
-        "enabledIf": "spotPriceRank6h<=3",
-        "desc": "cheapest 3 hour in coming 6 h"
-    }, 
     "11120": {
-        "desc": "best spot price ranks in 12 h window"
+        "desc": "best spot price ranks in 9 h window"
     },
     "11121": {
-        "enabledIf": "spotPriceRank12h==1",
-        "desc": "cheapest 1 h in 12 h"
+        "enabledIf": "spotPriceRank9h==1",
+        "desc": "cheapest 1 h in 9 h"
     },
     "11122": {
-        "enabledIf": "spotPriceRank12h<=2",
-        "desc": "cheapest 2 h in 12 h"
-    },
-    "11123": {
-        "enabledIf": "spotPriceRank12h<=3",
-        "desc": "cheapest 3 h in 12 h"
+        "enabledIf": "spotPriceRank9h<=2",
+        "desc": "cheapest 2 h in 9 h"
     },
     "11124": {
-        "enabledIf": "spotPriceRank12h<=4",
-        "desc": "cheapest 4 h in 12 h"
+        "enabledIf": "spotPriceRank9h<=4",
+        "desc": "cheapest 4 h in 9 h"
+    },
+    "11126": {
+        "enabledIf": "spotPriceRank9h<=6",
+        "desc": "cheapest 6 h in 9 h"
     },
     "11140": {
         "desc": "best spot price ranks in 24 h window"
@@ -93,17 +89,9 @@
         "enabledIf": "spotPriceRank24h<=2",
         "desc": "Cheapest 2 hours in 24 h window"
     },
-    "11143": {
-        "enabledIf": "spotPriceRank24h<=3",
-        "desc": "Cheapest 3 hours in 24 h window"
-    },
     "11144": {
         "enabledIf": "spotPriceRank24h<=4",
         "desc": "Cheapest 4 hours in 24 h window"
-    },
-    "11145": {
-        "enabledIf": "spotPriceRank24h<=5",
-        "desc": "Cheapest 5 hours in 24 h window"
     },
     "11146": {
         "enabledIf": "spotPriceRank24h<=6",
@@ -112,5 +100,14 @@
     "11156": {
         "enabledIf": "energyPriceSpot<4.0 and spotPriceRank24h<=6",
         "desc": "Spot price is low and now it is one of 6 cheapest hour in 24 h"
-    }
+    },
+    "12000": {"desc": "price, solar forecast and time dependant states"},
+    "12100": {"desc": "cheapest night (22-07) periods"},
+    "12102": {"desc": "2 cheapest hours of the night", "enabledIf": "spotPriceRank9h<=2 and (hhmm >= '2200' or hhmm <'0700')"},
+    "12104": {"desc": "4 cheapest hours of the night", "enabledIf": "spotPriceRank9h<=4 and (hhmm >= '2200' or hhmm <'0700')"},
+    "12106": {"desc": "6 cheapest hours of the night", "enabledIf": "spotPriceRank9h<=6 and (hhmm >= '2200' or hhmm <'0700')"},
+    "12200": {"desc": "cheapest night (22-07) periods, dark day coming"},
+    "12202": {"desc": "2 cheapest hours of the night, dark day coming", "enabledIf": "spotPriceRank9h<=2 and (hhmm >= '2200' or hhmm <'0700') and solar24h<5"},
+    "12204": {"desc": "4 cheapest hours of the night, dark day coming", "enabledIf": "spotPriceRank9h<=4 and (hhmm >= '2200' or hhmm <'0700') and solar24h<5"},
+    "12206": {"desc": "6 cheapest hours of the night, dark day coming", "enabledIf": "spotPriceRank9h<=6 and (hhmm >= '2200' or hhmm <'0700') and solar24h<5"}
 }
