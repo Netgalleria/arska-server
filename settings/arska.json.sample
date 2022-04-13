@@ -15,6 +15,8 @@
     "solarForecastBlocks" : [6,12,18,24],
     "spot_price_variable_code" : "spotPriceRank{}h",
     "solar_forecast_variable_code" : "solar{}h",
+    "solar_forecast_value_variable_code" : "solarValue{}h",
+    "solar_forecast_price_weighted_variable_code" : "solarWSpotPrice{}h",
     "states_internal_max" : 999 ,
     "client_api_keys" : ["API_KEY_1","API_KEY_2"],
     "state_series_ttl" : 7200,

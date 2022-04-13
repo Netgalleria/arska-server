@@ -34,9 +34,11 @@ def forecast_to_telegraf(location):
         daytotal = 0.0
         METRIC_NAME: str = "solarfcst"
         tag_name = "forecastpv"
+        #print("fcst_data['pvenergy']",fcst_data["pvenergy"])
         for pv_h in fcst_data["pvenergy"]:
 
             daytscur = int(pv_h["time"]/(3600000*24))
+            
             daytotal += pv_h["value"]+0.0
             i += 1
             

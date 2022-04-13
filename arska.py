@@ -6,6 +6,8 @@ import sys
 import json
 import os
 import signal
+import argparse
+
 
 
 import settings as s #file names and functions shared with Telegraf plugins
@@ -32,6 +34,7 @@ from threading import Thread
 data_updates = {}
 
 dayahead_list = None 
+dayahead_dict = {}
 forecastpv_list = None
 current_states = None
 states = None
@@ -47,10 +50,12 @@ arska = None
 
 def aggregate_dayahead_prices_timeser(start,end):
     global dayahead_list,  arska
+    #print(dayahead_list)
     
     for time in range(start, end+1, arska.nettingPeriodMinutes*60):
         # Aggregate day-ahead prices
         energyPriceSpot = None
+        
         if dayahead_list is not None:
             for price_entry in dayahead_list:
                 if price_entry["timestamp"] <= time and  time< price_entry["timestamp"]+3600: # 60 minutesperiod
@@ -67,24 +72,51 @@ def aggregate_dayahead_prices_timeser(start,end):
 
 def aggregate_solar_forecast_timeser(start,end,location):
     global forecastpv_list, arska
-
+   
+    print(location)
     for time in range(start, end+1, arska.nettingPeriodMinutes*60):
         blockSums = {}
+        blockPriceSums = {}
         for bCodei in arska.solarForecastBlocks:
             blockSums[str(bCodei)] = 0
+            blockPriceSums[str(bCodei)] = 0
 
         if forecastpv_list is not None:
             for fcst_entry in forecastpv_list:
+                #print("fcst_entry:",fcst_entry)
                 if location == fcst_entry["tags"]["location"]:
                     for bCodei in arska.solarForecastBlocks:
+                        #print("bCodei:",bCodei)
                         futureHours = bCodei        
                         if fcst_entry["timestamp"] < time+(futureHours*3600):
                             blockSums[str(bCodei)] += fcst_entry["fields"]["pvrefvalue"]
+                           # priceTimestamp = str(fcst_entry["timestamp"]-1800)
+                            priceTimestamp = (fcst_entry["timestamp"]-1800)
+                            if priceTimestamp in dayahead_dict.keys():
+                                blockPriceSums[str(bCodei)] += fcst_entry["fields"]["pvrefvalue"]*dayahead_dict[priceTimestamp]
+                            else:
+                                print("No timestamp in prices ",priceTimestamp)
 
         for sfbCode,sfb in blockSums.items():  
             blockCode = arska.get_setting("solar_forecast_variable_code").format(sfbCode)
-           # print(location, blockCode,time,round(sfb,2))
             arska.set_variable_timeser(blockCode,time,round(sfb,2))
+            #print(blockCode,time,round(sfb,2))
+
+        for sfbCode,sfb in blockPriceSums.items():  
+            blockCodeSum = arska.get_setting("solar_forecast_variable_code").format(sfbCode)
+            blockCode = arska.get_setting("solar_forecast_value_variable_code").format(sfbCode)
+            blockCodeAvgPrice = arska.get_setting("solar_forecast_price_weighted_variable_code").format(sfbCode)
+            arska.set_variable_timeser(blockCode,time,round(sfb,2))
+            
+            solarValue = blockSums[str(sfbCode)]
+            if solarValue >0.001:
+                solarAvgPrice = round(sfb/solarValue,2)
+            else:
+                solarAvgPrice = 0
+
+            arska.set_variable_timeser(blockCodeAvgPrice,time,solarAvgPrice)
+            print(time,blockCodeSum,round(solarValue,2),blockCode,round(sfb,2),blockCodeAvgPrice,solarAvgPrice)
+        
 
 
 
@@ -176,6 +208,8 @@ def check_states_timeser(start, end):
     global states
     global arska
     print("aikaväli:",start, end)
+    #print("dayahead_dict:",dayahead_dict)
+
     for time in range(start, end+1, arska.nettingPeriodMinutes*60):
         ok_states = []
         for state_key,state in states.items(): # check 
@@ -434,12 +468,21 @@ async def process_telegraf_post(request):
     #TODO: different metrics could be parametrized, so addional metrics (eg. PV inverter data) could be added without code changes
     if "metrics" in obj:
         dayahead_new = filtered_fields(obj["metrics"],"dayahead",s.dayahead_file_name)
+
         if len(dayahead_new)>0:
+            print("Got day-ahead prices from Telegraf.")
             dayahead_list = dayahead_new
+            #dayahead_dict = {}      
+            for price_entry in dayahead_list:
+                dayahead_dict[price_entry["timestamp"]] = price_entry["fields"]["energyPriceSpot"]
+
+            #print("dayahead_dict:",dayahead_dict)
           
         forecastpv_new = filtered_fields(obj["metrics"],"forecastpv",s.forecastpv_file_name)
         if len(forecastpv_new)>0:
+            print("Got energy forecast from Telegraf.")
             forecastpv_list = forecastpv_new
+            #print("forecastpv_list:",forecastpv_list)
 
     return web.Response(text=f"Thanks for your contibution Telegraf!")
 
@@ -459,6 +502,12 @@ def run_telegraf_once(cmd = None, start_delay = 10):
     
         
 def main(argv): 
+    global parser
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--port',dest='host_port', default=None)
+
+    args = parser.parse_args()
+
     load_program_config()    
  
     signal.signal(signal.SIGINT, sig_handler)
@@ -499,9 +548,13 @@ def main(argv):
     )
     #generate digest manually: echo -n 'my_new_password'|openssl dgst -sha512
 
+    if args.host_port:
+        host_port = args.host_port
+    else:
+        host_port = arska.get_setting("host_port")
 
-    web.run_app(app, host=arska.get_setting("host_ip"), port=arska.get_setting("host_port"))
-   #TODO: this could be main loop where recalculation are started after new data arrived from Telegraf
+    web.run_app(app, host=arska.get_setting("host_ip"), port=host_port)
+   #TODO: this could be main loop where recalculation are started after new data arrived from Telegraf 
     while True:
         pass
     
