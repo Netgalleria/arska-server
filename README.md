@@ -1,37 +1,4 @@
-For information about Arska Node and the concept see [Arska Node wiki](https://github.com/Netgalleria/arska-node/wiki)
+This repository contains outdated code of a server side functionality of Arska. See current version of ESP32 based application.
 
-## Arska Server
-Installation documentation is not finalized yet. This is a sceleton of documentation. Please comment on [Arska discussion](https://github.com/Netgalleria/arska-node/discussions).
+[Arska Node](https://github.com/Netgalleria/arska-node](https://github.com/Netgalleria/arska-node)
 
-
-### Files
-* arska.py - main program file. Starts from command line:  python3 arska.py or run as systemd service (see arska.service file)
-* bcdc_telegraf_pl.py - custom Arska Telegraf input plugin to read energy weather forecast
-* entsoe_telegraf_pl.py - custom Arska Telegraf input plugin to read day-ahead Spot-prices
-* shelly_telegraf_pl.py - custom Telegraf input plugin to read energy meter data from Shelly 3EM. The plugin data is not used by Arska Server, but can be used to update time series in InflufDB database and analysis. 
-* arska.service - systemd service template, edit and install (sampple installation commands on the end of the file) if you like to run arska server as daemon
-* README.md  
-* setting/states.json  - state definition file
-* setting/arska.json.sample - copy to setting/arska.json end edit
-* setting/telegraf-arska.conf.sample - copy to setting/telegraf-arska.conf and edit
-
-
-### Installation on Linux
-
-* Goto your home directory (or other directory where you like clone Arska Server directory): `cd`
-* Clone Arska Server to your repository: `git clone https://github.com/Netgalleria/arska-server.git`
-* `cd arska-server`
-* install required packages:`sudo -H pip3 install pytzaiohttp aiohttp_sse aiohttp_session aiohttp_basicauth_middleware telegraf_pyplug entsoe-py hashlib--upgrade`
-
-### Install Arska as SystemD service:
-Edit directory path to match Arska Server directory. Ie edit variables ExecStart and WorkingDirectory in file arska.service.
-`nano arska.service`
-Then you can init the service and start in. The service
-```
-sudo cp arska.service /etc/systemd/system/arska.service
-sudo chmod 644 /etc/systemd/system/arska.service
-sudo systemctl daemon-reload
-sudo systemctl enable arska.service
-sudo systemctl start arska.service
-sudo systemctl status arska.service
-```
